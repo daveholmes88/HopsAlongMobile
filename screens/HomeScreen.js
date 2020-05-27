@@ -5,7 +5,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import * as Linking from 'expo-linking';
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [location, setLocation] = useState({
     latitude: 37,
     longitude: -122,
@@ -48,17 +48,17 @@ export default function HomeScreen() {
     })();
   }, []);
 
-  const handlePress = website => {
-    Linking.openURL(website)
+  const showBrewery = brewery => {
+    navigation.navigate('ShowScreen', brewery)
   }
 
   const renderBreweryCard = brewery => {
     return <Card key={brewery.id}>
-      <Text>{brewery.name}</Text>
+      <Button title={`${brewery.name}`} onPress={() => showBrewery(brewery)} />
       <Text>{brewery.brewery_type}</Text>
       <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
       <Button title={`${brewery.name}'s website`}
-        onPress={() => handlePress(brewery.website)} />
+        onPress={() => Linking.openURL(brewery.website)} />
       <Text>{brewery.phone}</Text>
     </Card >
   }

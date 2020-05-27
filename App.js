@@ -1,13 +1,22 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from "./screens/HomeScreen";
+import ShowScreen from "./screens/ShowScreen"
 
 export default function App() {
+
+  const AuthStack = createStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <HomeScreen />
-    </View>
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        <AuthStack.Screen name="HomeScreen" component={HomeScreen} />
+        <AuthStack.Screen name="ShowScreen" component={ShowScreen} />
+      </AuthStack.Navigator>
+    </NavigationContainer>
   );
 }
 

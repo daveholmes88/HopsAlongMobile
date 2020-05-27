@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView, SafeAreaView, Button } from "react-native";
 import { Card } from 'react-native-elements';
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import * as Linking from 'expo-linking';
 
 export default function HomeScreen() {
   const [location, setLocation] = useState({
@@ -47,17 +48,32 @@ export default function HomeScreen() {
     })();
   }, []);
 
+  const handlePress = website => {
+    Linking.openURL(website)
+  }
+
+  const renderBreweryCard = brewery => {
+    return <Card key={brewery.id}>
+      <Text>{brewery.name}</Text>
+      <Text>{brewery.brewery_type}</Text>
+      <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
+      <Button title={`${brewery.name}'s website`}
+        onPress={() => handlePress(brewery.website)} />
+      <Text>{brewery.phone}</Text>
+    </Card >
+  }
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         region={location}
       />
-      <View style={styles.breweryCard}>
-        <Card><Text>Hello Worldasdgafdsgsagasdgsagsgd</Text></Card>
-      </View>
-    </View>
+      <ScrollView style={styles.breweryCard}>
+        {breweries.map(brewery => renderBreweryCard(brewery))}
+      </ScrollView>
+    </SafeAreaView>
 
   );
 }
@@ -67,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    top: 50
   },
   map: {
     height: '50%',
@@ -74,7 +91,6 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   breweryCard: {
-    alignItems: 'center',
     height: 500,
     width: '100%',
     top: '50%'

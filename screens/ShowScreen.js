@@ -18,7 +18,12 @@ export default function ShowScreen({ route, navigation }) {
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
-                region={location} />
+                region={location} >
+                <MapView.Marker
+                    key={route.params.id}
+                    coordinate={{ latitude: route.params.latitude, longitude: route.params.longitude }}
+                />
+            </MapView>
             <View style={styles.cardContainer}>
                 <Card key={route.params.id} style={styles.breweryCard}>
                     <Text>{route.params.name}</Text>
@@ -27,7 +32,6 @@ export default function ShowScreen({ route, navigation }) {
                     <Button title={`${route.params.name}'s website`}
                         onPress={() => Linking.openURL(route.params.website)} />
                     <Text>{route.params.phone}</Text>
-                    <Text>Hello World</Text>
                 </Card >
             </View>
         </SafeAreaView>

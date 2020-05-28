@@ -27,6 +27,7 @@ export default function ShowScreen({ route, navigation }) {
                     <Button title={`${route.params.name}'s website`}
                         onPress={() => Linking.openURL(route.params.website)} />
                     <Text>{route.params.phone}</Text>
+                    <Text>Hello World</Text>
                 </Card >
             </View>
         </SafeAreaView>

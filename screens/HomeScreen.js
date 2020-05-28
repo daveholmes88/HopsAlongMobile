@@ -63,13 +63,24 @@ export default function HomeScreen({ navigation }) {
     </Card >
   }
 
+  const breweryMarkers = () => {
+    return breweries.map(brewery => {
+      return <MapView.Marker
+        key={brewery.id}
+        coordinate={{ latitude: brewery.latitude, longitude: brewery.longitude }}
+      />
+    })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
-        region={location}
-      />
+        region={location}>
+        {breweryMarkers()}
+      </MapView>
+
       <ScrollView style={styles.breweryCard}>
         {breweries.map(brewery => renderBreweryCard(brewery))}
       </ScrollView>
@@ -83,7 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    top: 50
   },
   map: {
     height: '50%',

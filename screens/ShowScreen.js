@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Button, TextInput } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Card } from 'react-native-elements';
+import StarRating from 'react-native-star-rating';
+
 
 export default function ShowScreen({ route, navigation }) {
     const [note, changeNote] = useState('')
-    const [myRating, changeRating] = useState(0)
+    const [myRating, setMyRating] = useState(0)
     const [globalRating, changeGlobalRating] = useState(0)
     const [location, setLocation] = useState({
         latitude: route.params.latitude,
@@ -14,7 +16,7 @@ export default function ShowScreen({ route, navigation }) {
         longitudeDelta: 0.045,
     });
 
-    console.log(note)
+    console.log(myRating)
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.cardContainer}>
@@ -24,6 +26,13 @@ export default function ShowScreen({ route, navigation }) {
                     <Text>{route.params.address} {route.params.city}, {route.params.state}, {route.params.zip}</Text>
                     <Button title={`${route.params.name}'s website`}
                         onPress={() => Linking.openURL(route.params.website)} />
+                    <Text>Global Rating: {globalRating}</Text>
+                    <StarRating
+                        disabled={false}
+                        maxStars={5}
+                        rating={myRating}
+                        selectedStar={(rating) => setMyRating(rating)}
+                    />
                     <TextInput style={styles.textInput}
                         onChangeText={text => changeNote(text)}
                         value={note}
@@ -46,7 +55,8 @@ export default function ShowScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     breweryCard: {
         width: '100%',
-        position: 'absolute'
+        position: 'absolute',
+        alignItems: 'center'
     },
     cardContainer: {
     },
@@ -56,10 +66,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     map: {
-        height: '50%',
+        height: '60%',
         width: '100%',
         position: 'absolute',
-        top: '50%'
+        top: '40%'
     },
     textInput: {
         height: 40,

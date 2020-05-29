@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Button, TextInput } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Card } from 'react-native-elements';
 
 export default function ShowScreen({ route, navigation }) {
-
+    const [note, changeNote] = useState('')
+    const [myRating, changeRating] = useState(0)
+    const [globalRating, changeGlobalRating] = useState(0)
     const [location, setLocation] = useState({
         latitude: route.params.latitude,
         longitude: route.params.longitude,
@@ -12,9 +14,22 @@ export default function ShowScreen({ route, navigation }) {
         longitudeDelta: 0.045,
     });
 
-    console.log(route.params)
+    console.log(note)
     return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.cardContainer}>
+                <Card key={route.params.id} style={styles.breweryCard}>
+                    <Text>{route.params.name}</Text>
+                    <Text>{route.params.brewery_type}</Text>
+                    <Text>{route.params.address} {route.params.city}, {route.params.state}, {route.params.zip}</Text>
+                    <Button title={`${route.params.name}'s website`}
+                        onPress={() => Linking.openURL(route.params.website)} />
+                    <TextInput style={styles.textInput}
+                        onChangeText={text => changeNote(text)}
+                        value={note}
+                    />
+                </Card >
+            </View>
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
@@ -24,16 +39,6 @@ export default function ShowScreen({ route, navigation }) {
                     coordinate={{ latitude: route.params.latitude, longitude: route.params.longitude }}
                 />
             </MapView>
-            <View style={styles.cardContainer}>
-                <Card key={route.params.id} style={styles.breweryCard}>
-                    <Text>{route.params.name}</Text>
-                    <Text>{route.params.brewery_type}</Text>
-                    <Text>{route.params.address} {route.params.city}, {route.params.state}, {route.params.zip}</Text>
-                    <Button title={`${route.params.name}'s website`}
-                        onPress={() => Linking.openURL(route.params.website)} />
-                    <Text>{route.params.phone}</Text>
-                </Card >
-            </View>
         </SafeAreaView>
     )
 }
@@ -44,7 +49,6 @@ const styles = StyleSheet.create({
         position: 'absolute'
     },
     cardContainer: {
-        top: '50%'
     },
     container: {
         flex: 1,
@@ -54,6 +58,12 @@ const styles = StyleSheet.create({
     map: {
         height: '50%',
         width: '100%',
-        position: 'absolute'
+        position: 'absolute',
+        top: '50%'
     },
+    textInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1
+    }
 })

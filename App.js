@@ -4,7 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from "./screens/HomeScreen";
-import ShowScreen from "./screens/ShowScreen"
+import ShowScreen from "./screens/ShowScreen";
+import Login from "./screens/Login"
 
 export default function App() {
 
@@ -13,6 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <AuthStack.Navigator>
+        <AuthStack.Screen name="Login" component={Login} />
         <AuthStack.Screen name="HomeScreen" component={HomeScreen} />
         <AuthStack.Screen name="ShowScreen" component={ShowScreen} />
       </AuthStack.Navigator>

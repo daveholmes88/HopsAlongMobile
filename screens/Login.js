@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TextInput, Button } from 'react-native';
 import * as SecureStore from "expo-secure-store";
 
@@ -7,6 +7,12 @@ export default function Login({ navigation }) {
     const [username, onChangeUsername] = useState("");
     const [password, onChangePassword] = useState("");
     console.log(username, password);
+
+    useEffect(() => {
+        if (SecureStore.getItemAsync("token")) {
+            navigation.navigate('HomeScreen')
+        }
+    }, [])
 
     const sendLogin = () => {
         const reqUser = {
@@ -24,7 +30,10 @@ export default function Login({ navigation }) {
             .then((data) => {
                 SecureStore.setItemAsync("token", data.token)
                     .then(SecureStore.getItemAsync("token"))
-                    .then((results) => console.log(results))
+                    .then((results) => {
+                        navigation.navigate('HomeScreen')
+                        console.log(data)
+                    })
             })
             .catch((err) => console.log(err));
     };

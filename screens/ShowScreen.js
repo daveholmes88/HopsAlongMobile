@@ -1,31 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Button, TextInput } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Card } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
+import * as SecureStore from "expo-secure-store";
 
 
 export default function ShowScreen({ route, navigation }) {
+    const brewery = route.params.brewery
     const [note, changeNote] = useState('')
     const [myRating, setMyRating] = useState(0)
     const [globalRating, changeGlobalRating] = useState(0)
     const [location, setLocation] = useState({
-        latitude: route.params.latitude,
-        longitude: route.params.longitude,
+        latitude: brewery.latitude,
+        longitude: brewery.longitude,
         latitudeDelta: 0.09,
         longitudeDelta: 0.045,
     });
 
-    console.log(myRating)
+    useEffect(() => {
+        const token = SecureStore.getItemAsync("token")
+        if (token) {
+            const reqObj = {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+            fetch('http://localhost:3000/users', reqObj)
+                .then(resp => resp.json())
+                .then(data => console.log(data.user))
+        }
+    }, [])
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.cardContainer}>
-                <Card key={route.params.id} style={styles.breweryCard}>
-                    <Text>{route.params.name}</Text>
-                    <Text>{route.params.brewery_type}</Text>
-                    <Text>{route.params.address} {route.params.city}, {route.params.state}, {route.params.zip}</Text>
-                    <Button title={`${route.params.name}'s website`}
-                        onPress={() => Linking.openURL(route.params.website)} />
+                <Card key={brewery.id} style={styles.breweryCard}>
+                    <Text>{brewery.name}</Text>
+                    <Text>{brewery.brewery_type}</Text>
+                    <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
+                    <Button title={`${brewery.name}'s website`}
+                        onPress={() => Linking.openURL(brewery.website)} />
                     <Text>Global Rating: {globalRating}</Text>
                     <StarRating
                         disabled={false}
@@ -44,8 +60,8 @@ export default function ShowScreen({ route, navigation }) {
                 provider={PROVIDER_GOOGLE}
                 region={location} >
                 <MapView.Marker
-                    key={route.params.id}
-                    coordinate={{ latitude: route.params.latitude, longitude: route.params.longitude }}
+                    key={brewery.id}
+                    coordinate={{ latitude: brewery.latitude, longitude: brewery.longitude }}
                 />
             </MapView>
         </SafeAreaView>

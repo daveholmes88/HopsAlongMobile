@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, ScrollView, SafeAreaView, Button } from "react-native";
 import { Card } from 'react-native-elements';
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import * as Linking from 'expo-linking';
 
 export default function HomeScreen({ navigation }) {
+
   const [location, setLocation] = useState({
     latitude: 37,
     longitude: -122,
@@ -49,7 +50,7 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   const showBrewery = brewery => {
-    navigation.navigate('ShowScreen', brewery)
+    navigation.navigate('ShowScreen', { brewery: brewery })
   }
 
   const renderBreweryCard = brewery => {

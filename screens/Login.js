@@ -9,12 +9,28 @@ export default function Login({ navigation }) {
     console.log(username, password);
 
     useEffect(() => {
-        if (SecureStore.getItemAsync("token")) {
-            navigation.navigate('HomeScreen')
-        }
+        SecureStore.getItemAsync("token")
+            .then(data => {
+                const token = data
+                if (token) {
+                    const reqObj = {
+                        method: 'GET',
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                    fetch('http://localhost:3000/users', reqObj)
+                        .then(resp => resp.json())
+                        .then(data => {
+                            navigation.navigate('HomeScreen', { user: data.user })
+                        })
+                        .catch(err => console.log(err))
+                }
+            })
     }, [])
 
     const sendLogin = () => {
+        console.log('+++++++++++++++++++++++')
         const reqUser = {
             method: "POST",
             headers: {
@@ -29,16 +45,11 @@ export default function Login({ navigation }) {
             .then((resp) => resp.json())
             .then((data) => {
                 SecureStore.setItemAsync("token", data.token)
-                    .then(SecureStore.getItemAsync("token"))
-                    .then((results) => {
-                        navigation.navigate('HomeScreen')
-                        console.log(data)
-                    })
+                navigation.navigate('HomeScreen', { user: data.user })
             })
             .catch((err) => console.log(err));
     };
 
-    console.log()
     return (
         <View style={styles.container}>
             <Text>Username:</Text>

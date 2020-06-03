@@ -2,32 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TextInput, Button } from 'react-native';
 import * as SecureStore from "expo-secure-store";
 
-export default function Login({ navigation }) {
-
+export default function Login({ navigation, route }) {
     const [username, onChangeUsername] = useState("");
     const [password, onChangePassword] = useState("");
-    console.log(username, password);
 
     useEffect(() => {
-        SecureStore.getItemAsync("token")
-            .then(data => {
-                const token = data
-                if (token) {
-                    const reqObj = {
-                        method: 'GET',
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    }
-                    fetch('http://localhost:3000/users', reqObj)
-                        .then(resp => resp.json())
-                        .then(data => {
-                            navigation.navigate('HomeScreen', { user: data.user })
-                        })
-                        .catch(err => console.log(err))
-                }
-            })
-    }, [])
+        const token = SecureStore.getItemAsync("token")
+        if (token) {
+            navigation.navigate('HomeScreen')
+        }
+    })
 
     const sendLogin = () => {
         console.log('+++++++++++++++++++++++')
@@ -50,8 +34,13 @@ export default function Login({ navigation }) {
             .catch((err) => console.log(err));
     };
 
+    const homeScreenNav = () => {
+        navigation.navigate('HomeScreen')
+    }
+
     return (
         <View style={styles.container}>
+            {route.params.user ? homeScreenNav() : null}
             <Text>Username:</Text>
             <TextInput
                 style={styles.textInput}

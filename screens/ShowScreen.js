@@ -7,7 +7,9 @@ import * as SecureStore from "expo-secure-store";
 
 
 export default function ShowScreen({ route, navigation }) {
+    const user = route.params.user
     const brewery = route.params.brewery
+    const [allRatings, setallRatings] = useState(route.params.ratings)
     const [note, changeNote] = useState('')
     const [myRating, setMyRating] = useState(0)
     const [globalRating, changeGlobalRating] = useState(0)
@@ -18,21 +20,17 @@ export default function ShowScreen({ route, navigation }) {
         longitudeDelta: 0.045,
     });
 
-    useEffect(() => {
-        const token = SecureStore.getItemAsync("token")
-        if (token) {
-            const reqObj = {
-                method: 'GET',
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-            fetch('http://localhost:3000/users', reqObj)
-                .then(resp => resp.json())
-                .then(data => console.log(data.user))
-        }
-    }, [])
+    // useEffect(() => {
+    // const breweryRatings = allRatings.filter(rating => {
+    //     return rating.brewery_id === brewery.id
+    // })
+    // setMyRating(breweryRatings.filter(rating => {
+    //     return rating.user_id === user.id
+    // }))
 
+    // }, [])
+
+    console.log(user)
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.cardContainer}>

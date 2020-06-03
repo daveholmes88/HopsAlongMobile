@@ -7,6 +7,7 @@ import * as SecureStore from "expo-secure-store";
 import HomeScreen from "./screens/HomeScreen";
 import ShowScreen from "./screens/ShowScreen";
 import Login from "./screens/Login"
+import MyRatingScreen from "./screens/MyRatingScreen"
 
 export default function App() {
 
@@ -38,12 +39,14 @@ export default function App() {
       })
   }, [])
 
+  console.log(user)
   return (
     <NavigationContainer>
       <AuthStack.Navigator>
-        <AuthStack.Screen name="Login" component={Login} />
+        <AuthStack.Screen name="Login" component={Login} initialParams={{ user: user }} />
         <AuthStack.Screen name="HomeScreen" component={HomeScreen} initialParams={{}} />
         <AuthStack.Screen name="ShowScreen" component={ShowScreen} initialParams={{ user: user, ratings: allRatings }} />
+        <AuthStack.Screen name="MyRatingScreen" component={MyRatingScreen} initialParams={{ user: user, ratings: allRatings, breweries: allBreweries }} />
       </AuthStack.Navigator>
     </NavigationContainer>
   );

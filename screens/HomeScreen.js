@@ -5,8 +5,7 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import * as Linking from 'expo-linking';
 
-export default function HomeScreen({ navigation }) {
-
+export default function HomeScreen({ navigation, route }) {
   const [location, setLocation] = useState({
     latitude: 37,
     longitude: -122,

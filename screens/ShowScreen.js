@@ -3,16 +3,15 @@ import { View, Text, StyleSheet, SafeAreaView, Button, TextInput } from 'react-n
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Card } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
-import * as SecureStore from "expo-secure-store";
-
 
 export default function ShowScreen({ route, navigation }) {
     const user = route.params.user
     const brewery = route.params.brewery
-    const [allRatings, setallRatings] = useState(route.params.ratings)
-    const [note, changeNote] = useState('')
-    const [myRating, setMyRating] = useState(0)
-    const [globalRating, changeGlobalRating] = useState(0)
+    const [allRatings, setAllRatings] = useState(route.params.ratings)
+    const [notes, setNotes] = useState('')
+    const [myNumber, setMyNumber] = useState(0)
+    const [globalRating, setGlobalRating] = useState(0)
+    const [myRating, setMyRating] = useState(null)
     const [location, setLocation] = useState({
         latitude: brewery.latitude,
         longitude: brewery.longitude,
@@ -20,17 +19,85 @@ export default function ShowScreen({ route, navigation }) {
         longitudeDelta: 0.045,
     });
 
-    // useEffect(() => {
-    // const breweryRatings = allRatings.filter(rating => {
-    //     return rating.brewery_id === brewery.id
-    // })
-    // setMyRating(breweryRatings.filter(rating => {
-    //     return rating.user_id === user.id
-    // }))
+    useEffect(() => {
+        const breweryRatings = allRatings.filter(rating => {
+            return rating.brewery_id === brewery.id
+        })
+        getGlobalRatings(breweryRatings)
+        getMyInfo(breweryRatings)
+    }, [])
 
-    // }, [])
+    const getGlobalRatings = breweryRatings => {
+        if (breweryRatings.length > 0) {
+            const allNumbers = breweryRatings.map(rating => rating.number)
+            setGlobalRating(allNumbers.reduce((a, b) => a + b, 0) / allNumbers.length)
+        }
+    }
 
-    console.log(user)
+    const getMyInfo = breweryRatings => {
+        const myRating = breweryRatings.filter(rating => {
+            return rating.user_id === user.id
+        })
+        if (myRating.length > 0) {
+            setMyRating(myRating[0])
+            setMyNumber(myRating[0].number)
+            setNotes(myRating[0].notes)
+        }
+    }
+
+    const handleSubmit = () => {
+        if (myNumber !== 0) {
+            if (myRating) {
+                editRating()
+            } else {
+                createRating()
+            }
+        }
+    }
+
+    const createRating = () => {
+        const createObj = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rating: myNumber,
+                notes: notes,
+                brewery_id: brewery.id,
+                user_id: user.id
+            })
+        }
+        fetch('http://localhost:3000/ratings', createObj)
+            .then(resp => resp.json())
+            .then(ratings => {
+                setAllRatings(ratings)
+                history.push('myRatingScreen')
+            })
+    }
+
+    const editRating = () => {
+        const updateObj = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rating: myRating.id,
+                number: myNumber,
+                notes: notes
+            })
+        }
+        fetch(`http://localhost:3000/ratings/${myRating.id}`, updateObj)
+            .then(resp => resp.json())
+            .then((ratings => {
+                setAllRatings(ratings)
+                navigation.navigate('MyRatingScreen')
+            }))
+            .catch(err => console.log(err))
+    }
+
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.cardContainer}>
@@ -44,13 +111,15 @@ export default function ShowScreen({ route, navigation }) {
                     <StarRating
                         disabled={false}
                         maxStars={5}
-                        rating={myRating}
-                        selectedStar={(rating) => setMyRating(rating)}
+                        rating={myNumber}
+                        selectedStar={(rating) => setMyNumber(rating)}
                     />
                     <TextInput style={styles.textInput}
-                        onChangeText={text => changeNote(text)}
-                        value={note}
+                        onChangeText={text => setNotes(text)}
+                        value={notes}
                     />
+                    <Button title='Submit'
+                        onPress={handleSubmit} />
                 </Card >
             </View>
             <MapView

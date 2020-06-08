@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Card, Button, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Card, Button, ScrollView, StyleSheet, TextInput } from 'react-native';
 
 export default function MyRatingScreen({ navigation, route }) {
     const user = route.params.user
     const ratings = route.params.ratings
     const breweries = route.params.breweries
+    const [search, setSearch] = useState('')
 
     const renderBreweries = () => {
         const myRatings = ratings.filter(rating => {
@@ -39,6 +40,10 @@ export default function MyRatingScreen({ navigation, route }) {
     }
     return (
         <View style={styles.container}>
+            <TextInput style={styles.textInput}
+                onChangeText={text => setSearch(text)}
+                value={search}
+            />
             <ScrollView style={styles.breweryCard}>{renderBreweries()}</ScrollView>
         </View>
     )
@@ -53,5 +58,10 @@ const styles = StyleSheet.create({
     breweryCard: {
         height: 500,
         width: '100%',
+    },
+    textInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1
     }
 });

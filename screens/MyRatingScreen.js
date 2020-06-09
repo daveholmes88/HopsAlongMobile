@@ -17,11 +17,11 @@ export default function MyRatingScreen({ navigation, route }) {
         let myBreweries = breweries.filter(brewery => {
             return breweryId.includes(brewery.id)
         })
-        // if (this.state.searchName) {
-        //     breweries = breweries.filter(brewery => {
-        //         return brewery.name.toLowerCase().includes(this.state.searchName.toLowerCase())
-        //     })
-        // }
+        if (search) {
+            breweries = breweries.filter(brewery => {
+                return brewery.name.toLowerCase().includes(search.toLowerCase())
+            })
+        }
         return myBreweries.map(brewery => {
             const rating = myRatings.filter(rating => rating.brewery_id === brewery.id)
             const allRatings = ratings.filter(rating => rating.brewery_id === brewery.id)

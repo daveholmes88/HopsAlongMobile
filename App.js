@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import * as SecureStore from "expo-secure-store";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from "./screens/HomeScreen";
 import ShowScreen from "./screens/ShowScreen";
@@ -12,6 +13,7 @@ import MyRatingScreen from "./screens/MyRatingScreen"
 export default function App() {
 
   const AuthStack = createStackNavigator();
+  const Tab = createBottomTabNavigator();
   const [allBreweries, setAllBreweries] = useState([])
   const [allRatings, setAllRatings] = useState([])
   const [user, setUser] = useState({})
@@ -59,3 +61,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+{/* <NavigationBar
+        title={'this is a test'}
+        height={44}
+      /> */}
+
+
+
+

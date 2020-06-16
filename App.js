@@ -62,10 +62,6 @@ const styles = StyleSheet.create({
   },
 });
 
-{/* <NavigationBar
-        title={'this is a test'}
-        height={44}
-      /> */}
 
 
 

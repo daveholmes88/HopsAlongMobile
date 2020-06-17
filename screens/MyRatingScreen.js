@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     textInput: {
         height: 40,
         width: '90%',
-        borderColor: 'gray',
+        borderColor: 'yellow',
         borderWidth: 1
     }
 });

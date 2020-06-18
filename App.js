@@ -20,7 +20,6 @@ export default function App() {
   const [allBreweries, setAllBreweries] = useState([])
   const [allRatings, setAllRatings] = useState([])
   const [user, setUser] = useState({})
-  console.log(user)
 
   useEffect(() => {
     SecureStore.getItemAsync("token")
@@ -63,7 +62,8 @@ export default function App() {
 
   createSearchStack = () => {
     return <Stack.Navigator>
-      <Stack.Screen name='SearchScreen' component={SearchScreen} />
+      <Stack.Screen name='SearchScreen' component={SearchScreen} initialParams={{ breweries: allBreweries }} />
+      <Stack.Screen name='ShowScreen' component={ShowScreen} initialParams={{ user: user, ratings: allRatings }} />
     </Stack.Navigator>
   }
 

@@ -7,7 +7,8 @@ export default function Login({ navigation, route }) {
     const [password, onChangePassword] = useState("");
 
     useEffect(() => {
-        const token = SecureStore.getItemAsync("token")
+        const token = SecureStore.getItemAsync("data")
+        console.log(token)
         if (token) {
             navigation.navigate('HomeScreen')
         }
@@ -16,7 +17,7 @@ export default function Login({ navigation, route }) {
     const sendLogin = () => {
         console.log('+++++++++++++++++++++++')
         const reqUser = {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -25,22 +26,21 @@ export default function Login({ navigation, route }) {
                 password: password,
             }),
         };
-        fetch("http://localhost:3000/users", reqUser)
+        fetch("http://localhost:3000/users/1", reqUser)
             .then((resp) => resp.json())
             .then((data) => {
-                SecureStore.setItemAsync("token", data.token)
-                navigation.navigate('HomeScreen', { user: data.user })
+                if (data.error) {
+                    console.log(data.error)
+                } else {
+                    SecureStore.setItemAsync("token", data.token)
+                    navigation.navigate('HomeScreen', { user: data.user })
+                }
             })
             .catch((err) => console.log(err));
     };
 
-    const homeScreenNav = () => {
-        navigation.navigate('HomeScreen')
-    }
-
     return (
         <View style={styles.container}>
-            {route.params.user ? homeScreenNav() : null}
             <Text>Username:</Text>
             <TextInput
                 style={styles.textInput}

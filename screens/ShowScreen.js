@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         height: '60%',
         width: '100%',
         position: 'absolute',
-        top: '40%'
+        top: '50%'
     },
     textInput: {
         height: 40,

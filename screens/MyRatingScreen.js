@@ -8,6 +8,7 @@ export default function MyRatingScreen({ navigation, route }) {
     const ratings = route.params.ratings
     const breweries = route.params.breweries
     const [search, setSearch] = useState('')
+    console.log(route.params.breweries)
 
     const showBrewery = brewery => {
         navigation.navigate('ShowScreen', { brewery: brewery })
@@ -41,12 +42,12 @@ export default function MyRatingScreen({ navigation, route }) {
                     onPress={() => Linking.openURL(brewery.website)} />
                 <Text>Global Rating: {averageRating}</Text>
                 <Text>My Rating: {rating[0].number}</Text>
-                <Text>{brewery.phone}</Text>
             </Card >
         })
     }
     return (
         <View style={styles.container}>
+            <Text>Hello</Text>
             <TextInput style={styles.textInput}
                 onChangeText={text => setSearch(text)}
                 value={search}

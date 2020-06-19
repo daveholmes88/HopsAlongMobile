@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Dimensions, ScrollView, SafeAreaView, Button } from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView, TextInput, SafeAreaView, Button } from "react-native";
 import { Card } from 'react-native-elements';
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
@@ -12,6 +12,7 @@ export default function HomeScreen({ navigation, route }) {
     latitudeDelta: 0.09,
     longitudeDelta: 0.045,
   });
+  const [searchLocation, setSearchLocation] = useState('')
   const [breweries, setBreweries] = useState([]);
 
   useEffect(() => {
@@ -21,39 +22,45 @@ export default function HomeScreen({ navigation, route }) {
         let position = await Location.getCurrentPositionAsync({
           enableHighAccuracy: true,
         });
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        setLocation({
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.09,
-          longitudeDelta: 0.045,
-        });
         const newLocation = {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            location: [latitude, longitude]
+            location: [position.coords.latitude, position.coords.longitude]
           })
         }
-        fetch('http://localhost:3000/descriptions', newLocation)
-          .then(resp => resp.json())
-          .then(data => setBreweries(data.breweries))
-          .catch(err => console.log(err))
+        locationFetch(newLocation)
       } else {
         console.log("not granted");
       }
     })();
   }, []);
 
+  const locationFetch = newLocation => {
+    fetch('http://localhost:3000/descriptions', newLocation)
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data)
+        setBreweries(data.breweries)
+        setLocation({
+          latitude: data.location[0],
+          longitude: data.location[1],
+          latitudeDelta: 0.09,
+          longitudeDelta: 0.045,
+        });
+        setSearchLocation('')
+      })
+      .catch(err => console.log(err))
+  }
+
   const showBrewery = brewery => {
     navigation.navigate('ShowScreen', { brewery: brewery })
   }
 
   const renderBreweryCard = brewery => {
-    return <Card key={brewery.id}>
+    return <Card key={brewery.id} style={styles.breweryCard}>
       <Button title={`${brewery.name}`} onPress={() => showBrewery(brewery)} />
       <Text>{brewery.brewery_type}</Text>
       <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
@@ -72,16 +79,37 @@ export default function HomeScreen({ navigation, route }) {
     })
   }
 
+  onSearch = () => {
+    const newLocation = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        location: searchLocation
+      })
+    }
+    locationFetch(newLocation)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
+      <TextInput
+        style={styles.textInput}
+        onChangeText={(text) => setSearchLocation(text)}
+        value={searchLocation}
+        placeholder='Location' />
+      <Button
+        title='Search'
+        onPress={onSearch}
+      />
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         region={location}>
         {breweryMarkers()}
       </MapView>
-
-      <ScrollView style={styles.breweryCard}>
+      <ScrollView>
         {breweries.map(brewery => renderBreweryCard(brewery))}
       </ScrollView>
     </SafeAreaView>
@@ -96,13 +124,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   map: {
-    height: '50%',
+    height: '40%',
     width: '100%',
-    position: 'absolute'
   },
   breweryCard: {
     height: 500,
     width: '100%',
-    top: '50%'
+    borderColor: "yellow",
+    borderWidth: 1,
+  },
+  textInput: {
+    height: 50,
+    borderColor: "yellow",
+    width: '70%',
+    borderWidth: 1,
   }
 });

@@ -7,11 +7,13 @@ export default function Login({ navigation, route }) {
     const [password, onChangePassword] = useState("");
 
     useEffect(() => {
-        const token = SecureStore.getItemAsync("data")
-        console.log(token)
-        if (token) {
-            navigation.navigate('HomeScreen')
-        }
+        SecureStore.getItemAsync("token")
+            .then(data => {
+                const token = data
+                if (token) {
+                    navigation.navigate('HomeScreen')
+                }
+            })
     })
 
     const sendLogin = () => {

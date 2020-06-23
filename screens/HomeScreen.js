@@ -42,7 +42,6 @@ export default function HomeScreen({ navigation, route }) {
     fetch('http://localhost:3000/descriptions', newLocation)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
         setBreweries(data.breweries)
         setLocation({
           latitude: data.location[0],
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 50,
-    borderColor: "yellow",
+    borderColor: "black",
     width: '70%',
     borderWidth: 1,
   }

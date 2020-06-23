@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import * as SecureStore from "expo-secure-store";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import HomeScreen from "./screens/HomeScreen";
 import ShowScreen from "./screens/ShowScreen";
@@ -16,7 +15,6 @@ export default function App() {
 
   const Stack = createStackNavigator();
   const Tab = createBottomTabNavigator();
-  const Drawer = createDrawerNavigator();
   const [allBreweries, setAllBreweries] = useState([])
   const [allRatings, setAllRatings] = useState([])
   const [user, setUser] = useState({})
@@ -25,7 +23,6 @@ export default function App() {
     SecureStore.getItemAsync("token")
       .then(data => {
         const token = data
-        console.log(data)
         if (token) {
           const reqObj = {
             method: 'GET',

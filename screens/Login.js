@@ -5,7 +5,7 @@ import * as SecureStore from "expo-secure-store";
 export default function Login({ navigation, route }) {
     const [username, onChangeUsername] = useState("");
     const [password, onChangePassword] = useState("");
-
+    console.log(route.params)
     useEffect(() => {
         SecureStore.getItemAsync("token")
             .then(data => {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         height: 100,
-        borderColor: "yellow",
+        borderColor: "black",
         width: 300,
         borderWidth: 1
     }

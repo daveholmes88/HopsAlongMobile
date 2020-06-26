@@ -3,9 +3,11 @@ import { StyleSheet, Text, View, Dimensions, ScrollView, TextInput, SafeAreaView
 import { Card } from 'react-native-elements';
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-import * as Linking from 'expo-linking';
+
+import BreweryCard from './BreweryCard'
 
 export default function HomeScreen({ navigation, route }) {
+  ratings = route.params.ratings
   const [location, setLocation] = useState({
     latitude: 37,
     longitude: -122,
@@ -59,8 +61,8 @@ export default function HomeScreen({ navigation, route }) {
   }
 
   const renderBreweryCard = brewery => {
-    return <Card key={brewery.id} style={styles.breweryCard}>
-      <Button title={`${brewery.name}`} onPress={() => showBrewery(brewery)} />
+    return <Card key={brewery.id} containerStyle={styles.cardBorder} >
+      < Button title={`${brewery.name}`} onPress={() => showBrewery(brewery)} />
       <Text>{brewery.brewery_type}</Text>
       <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
       <Button title={`${brewery.name}'s website`}
@@ -126,11 +128,11 @@ const styles = StyleSheet.create({
     height: '40%',
     width: '100%',
   },
-  breweryCard: {
-    height: 500,
-    width: '100%',
-    borderColor: "yellow",
-    borderWidth: 1,
+  cardBorder: {
+    borderWidth: 5,
+    borderColor: "#FFC108",
+    borderTopLeftRadius: 1,
+    borderStyle: 'solid'
   },
   textInput: {
     height: 50,
@@ -139,3 +141,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   }
 });
+

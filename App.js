@@ -44,7 +44,7 @@ export default function App() {
 
   createHomeStack = () => {
     return <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} options={{ user: user }} />
+      <Stack.Screen name="Login" component={Login} initialParams={{ user: user, ratings: allRatings }} />
       <Stack.Screen name='HomeScreen' component={HomeScreen} initialParams={{ user: user, ratings: allRatings }} />
       <Stack.Screen name='ShowScreen' component={ShowScreen} initialParams={{ user: user, ratings: allRatings }} />
     </Stack.Navigator>

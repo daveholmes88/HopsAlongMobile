@@ -8,7 +8,7 @@ export default function MyRatingScreen({ navigation, route }) {
     const ratings = route.params.ratings
     const breweries = route.params.breweries
     const [search, setSearch] = useState('')
-    console.log(route.params.breweries)
+    console.log(user)
 
     const showBrewery = brewery => {
         navigation.navigate('ShowScreen', { brewery: brewery })
@@ -34,7 +34,7 @@ export default function MyRatingScreen({ navigation, route }) {
             const allRatings = ratings.filter(rating => rating.brewery_id === brewery.id)
             const allNumbers = allRatings.map(rating => rating.number)
             const averageRating = allNumbers.reduce((a, b) => a + b, 0) / allNumbers.length
-            return <Card key={brewery.id}>
+            return <Card key={brewery.id} containerStyle={styles.cardBorder}>
                 <Button title={`${brewery.name}`} onPress={() => showBrewery(brewery)} />
                 <Text>{brewery.brewery_type}</Text>
                 <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
@@ -47,7 +47,6 @@ export default function MyRatingScreen({ navigation, route }) {
     }
     return (
         <View style={styles.container}>
-            <Text>Hello</Text>
             <TextInput style={styles.textInput}
                 onChangeText={text => setSearch(text)}
                 value={search}
@@ -64,9 +63,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
     },
-    breweryCard: {
-        height: 500,
-        width: '100%',
+    cardBorder: {
+        borderWidth: 5,
+        borderColor: "#FFC108",
+        borderTopLeftRadius: 1,
+        borderStyle: 'solid'
     },
     textInput: {
         height: 40,

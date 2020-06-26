@@ -24,12 +24,13 @@ export default function HomeScreen({ navigation, route }) {
             })
         }
         return searchedBreweries.map(brewery => {
-            return <Card key={brewery.id}>
+            return <Card key={brewery.id} containerStyle={styles.cardBorder}>
                 <Button title={`${brewery.name}`} onPress={() => showBrewery(brewery)} />
                 <Text>{brewery.brewery_type}</Text>
                 <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
                 <Button title={`${brewery.name}'s website`}
                     onPress={() => Linking.openURL(brewery.website)} />
+                <Text>{brewery.phone}</Text>
             </Card >
         })
     }
@@ -73,5 +74,11 @@ const styles = StyleSheet.create({
         width: '50%',
         borderColor: 'black',
         borderWidth: 1,
+    },
+    cardBorder: {
+        borderWidth: 5,
+        borderColor: "#FFC108",
+        borderTopLeftRadius: 1,
+        borderStyle: 'solid'
     },
 })

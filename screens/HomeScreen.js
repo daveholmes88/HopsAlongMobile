@@ -8,6 +8,7 @@ import BreweryCard from './BreweryCard'
 
 export default function HomeScreen({ navigation, route }) {
   ratings = route.params.ratings
+  console.log(route.params)
   const [location, setLocation] = useState({
     latitude: 37,
     longitude: -122,
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid'
   },
   textInput: {
+    textAlign: 'center',
     height: 50,
     borderColor: "black",
     width: '70%',

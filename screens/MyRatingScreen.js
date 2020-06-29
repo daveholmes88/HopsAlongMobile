@@ -8,7 +8,6 @@ export default function MyRatingScreen({ navigation, route }) {
     const ratings = route.params.ratings
     const breweries = route.params.breweries
     const [search, setSearch] = useState('')
-    console.log(user)
 
     const showBrewery = brewery => {
         navigation.navigate('ShowScreen', { brewery: brewery })
@@ -50,6 +49,7 @@ export default function MyRatingScreen({ navigation, route }) {
             <TextInput style={styles.textInput}
                 onChangeText={text => setSearch(text)}
                 value={search}
+                placeholder="Filter Your Breweries"
             />
             <ScrollView style={styles.breweryCard}>{renderBreweries()}</ScrollView>
         </View>
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid'
     },
     textInput: {
+        textAlign: 'center',
         height: 40,
         width: '90%',
         borderColor: 'black',

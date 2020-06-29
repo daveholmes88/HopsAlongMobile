@@ -8,18 +8,18 @@ export default function Login({ navigation, route }) {
     const [email, onChangeEmail] = useState("")
     const [signup, setSignup] = useState(false)
 
-    // useEffect(() => {
-    //     SecureStore.getItemAsync("token")
-    //         .then(data => {
-    //             const token = data
-    //             if (token) {
-    //                 navigation.navigate('HomeScreen')
-    //             }
-    //         })
-    // })
+    useEffect(() => {
+        SecureStore.getItemAsync("token")
+            .then(data => {
+                const token = data
+                if (token) {
+                    navigation.navigate('HomeScreen')
+                }
+            })
+    }, [])
 
     const sendLogin = () => {
-        const reqser = {
+        const reqUser = {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export default function Login({ navigation, route }) {
                 email: email
             })
         }
-        fetch('http://localhost:3000/users/users', reqUser)
+        fetch('http://localhost:3000/users', reqUser)
             .then(resp => resp.json())
             .then(data => {
                 if (data.error) {

@@ -4,15 +4,7 @@ import { Card } from 'react-native-elements';
 import * as Linking from 'expo-linking';
 
 
-export default function BreweryCard({ brewery, showBrewery, ratings }) {
-
-    averageRating = () => {
-        const breweryRatings = ratings.filter(rating => {
-            return brewery.id === rating.brewery_id
-        })
-        const allNumbers = breweryRatings.map(rating => rating.number)
-        return allNumbers.reduce((a, b) => a + b, 0) / allNumbers.length
-    }
+export default function BreweryCard({ brewery, showBrewery }) {
 
     return (<Card key={brewery.id} containerStyle={styles.cardBorder} >
         < Button title={`${brewery.name}`} onPress={() => showBrewery(brewery)} />
@@ -21,8 +13,6 @@ export default function BreweryCard({ brewery, showBrewery, ratings }) {
         <Button title={`${brewery.name}'s website`}
             onPress={() => Linking.openURL(brewery.website)} />
         <Text>{brewery.phone}</Text>
-        <Text>Global Rating: {averageRating()}</Text>
-        {/* <Text>My Rating: {rating[0].number}</Text> */}
     </Card >
     )
 }

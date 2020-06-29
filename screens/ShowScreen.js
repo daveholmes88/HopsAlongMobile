@@ -72,7 +72,7 @@ export default function ShowScreen({ route, navigation }) {
             .then(resp => resp.json())
             .then(ratings => {
                 setAllRatings(ratings)
-                history.push('myRatingScreen')
+                history.push('Rating')
             })
     }
 
@@ -92,7 +92,7 @@ export default function ShowScreen({ route, navigation }) {
             .then(resp => resp.json())
             .then((ratings => {
                 setAllRatings(ratings)
-                navigation.navigate('MyRatingScreen')
+                navigation.navigate('Rating')
             }))
             .catch(err => console.log(err))
     }
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
         top: '50%'
     },
     textInput: {
+        textAlign: 'center',
         height: 40,
         borderColor: 'black',
         borderWidth: 1

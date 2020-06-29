@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "#FFC108",
     borderTopLeftRadius: 1,
-    borderStyle: 'solid'
+    borderStyle: 'solid',
   },
   textInput: {
     textAlign: 'center',

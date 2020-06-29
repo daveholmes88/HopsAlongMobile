@@ -20,6 +20,7 @@ export default function App() {
   const [allBreweries, setAllBreweries] = useState([])
   const [allRatings, setAllRatings] = useState([])
   const [user, setUser] = useState({})
+  console.log(user)
 
   useEffect(() => {
     SecureStore.getItemAsync("token")
@@ -45,6 +46,7 @@ export default function App() {
   }
 
   userFetch = (token) => {
+    console.log('++++++++++++++++++++++++')
     const reqObj = {
       method: 'GET',
       headers: {

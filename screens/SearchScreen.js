@@ -12,6 +12,7 @@ export default function HomeScreen({ navigation, route }) {
     const handleSubmit = () => {
         setSearch(searchField.toLowerCase())
         setSearchField('')
+        setFilter('')
     }
 
     const renderBreweries = () => {
@@ -50,12 +51,12 @@ export default function HomeScreen({ navigation, route }) {
             <Button
                 title='Search'
                 onPress={handleSubmit} />
-            <TextInput
+            {search ? <TextInput
                 style={styles.textInput}
                 onChangeText={(text) => setFilter(text)}
                 value={filter}
                 placeholder='Filter'
-            />
+            /> : null}
             <ScrollView>
                 {search ? renderBreweries() : null}
             </ScrollView>

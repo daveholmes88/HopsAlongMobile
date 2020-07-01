@@ -68,7 +68,7 @@ export default function ShowScreen({ route, navigation }) {
                 user_id: user.id
             })
         }
-        fetch('http://localhost:3000/ratings', createObj)
+        fetch('https://tranquil-earth-85240.herokuapp.com/ratings', createObj)
             .then(resp => resp.json())
             .then(ratings => {
                 setAllRatings(ratings)
@@ -88,7 +88,7 @@ export default function ShowScreen({ route, navigation }) {
                 notes: notes
             })
         }
-        fetch(`http://localhost:3000/ratings/${myRating.id}`, updateObj)
+        fetch(`https://tranquil-earth-85240.herokuapp.com/${myRating.id}`, updateObj)
             .then(resp => resp.json())
             .then((ratings => {
                 setAllRatings(ratings)
@@ -101,8 +101,8 @@ export default function ShowScreen({ route, navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.cardContainer}>
-                <Card key={brewery.id} style={styles.breweryCard}>
-                    <Text>{brewery.name}</Text>
+                <Card key={brewery.id} style={styles.breweryCard} containerStyle={styles.cardBorder}>
+                    <Text style={{ fontSize: 18 }} >{brewery.name}</Text>
                     <Text>{brewery.brewery_type}</Text>
                     <Text>{brewery.address} {brewery.city}, {brewery.state}, {brewery.zip}</Text>
                     <Button title={`${brewery.name}'s website`}
@@ -131,7 +131,7 @@ export default function ShowScreen({ route, navigation }) {
                     coordinate={{ latitude: brewery.latitude, longitude: brewery.longitude }}
                 />
             </MapView>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 
@@ -139,9 +139,14 @@ const styles = StyleSheet.create({
     breweryCard: {
         width: '100%',
         position: 'absolute',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    cardContainer: {
+    cardBorder: {
+        borderWidth: 5,
+        borderColor: "#FFC108",
+        borderTopLeftRadius: 1,
+        borderStyle: 'solid',
     },
     container: {
         flex: 1,

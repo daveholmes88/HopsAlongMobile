@@ -8,7 +8,6 @@ import BreweryCard from './BreweryCard'
 
 export default function HomeScreen({ navigation, route }) {
   ratings = route.params.ratings
-  console.log(route.params)
   const [location, setLocation] = useState({
     latitude: 37,
     longitude: -122,
@@ -42,7 +41,7 @@ export default function HomeScreen({ navigation, route }) {
   }, []);
 
   const locationFetch = newLocation => {
-    fetch('http://localhost:3000/descriptions', newLocation)
+    fetch('https://tranquil-earth-85240.herokuapp.com/descriptions', newLocation)
       .then(resp => resp.json())
       .then(data => {
         setBreweries(data.breweries)
@@ -124,6 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    justifyContent: 'center',
   },
   map: {
     height: '40%',

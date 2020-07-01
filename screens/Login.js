@@ -29,7 +29,7 @@ export default function Login({ navigation, route }) {
                 password: password,
             }),
         };
-        fetch("http://localhost:3000/users/1", reqUser)
+        fetch("https://tranquil-earth-85240.herokuapp.com/users/1", reqUser)
             .then((resp) => resp.json())
             .then((data) => {
                 if (data.error) {
@@ -54,13 +54,10 @@ export default function Login({ navigation, route }) {
                 email: email
             })
         }
-        fetch('http://localhost:3000/users', reqUser)
+        fetch('https://tranquil-earth-85240.herokuapp.com/users', reqUser)
             .then(resp => resp.json())
             .then(data => {
                 if (data.error) {
-                    // this.setState({
-                    //     alert: true
-                    // })
                     console.log(data)
                 } else {
                     SecureStore.setItemAsync("token", data.token)
@@ -70,12 +67,11 @@ export default function Login({ navigation, route }) {
             .catch(err => console.log(err))
     }
 
-    console.log(signup)
     return (
         <View style={styles.container}>
             {!signup ? <View>
                 <Text>Not a user?</Text>
-                <Button title='signup' onPress={() => setSignup(true)}></Button>
+                <Button title='Sign Up' onPress={() => setSignup(true)}></Button>
                 <Text>Username:</Text>
                 <TextInput
                     style={styles.textInput}

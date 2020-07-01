@@ -46,14 +46,13 @@ export default function App() {
   }
 
   userFetch = (token) => {
-    console.log('++++++++++++++++++++++++')
     const reqObj = {
       method: 'GET',
       headers: {
         "Authorization": `Bearer ${token}`
       }
     }
-    fetch('http://localhost:3000/users', reqObj)
+    fetch('https://tranquil-earth-85240.herokuapp.com/users', reqObj)
       .then(resp => resp.json())
       .then(data => {
         setAllBreweries(data.breweries)
@@ -63,12 +62,16 @@ export default function App() {
       .catch(err => console.log(err))
   }
 
+  signIn = (user) => {
+    console.log('-----------------------')
+    setUser(user)
+  }
+
   createHomeStack = () => {
     return <Stack.Navigator>
       <Stack.Screen
         name="Login"
         component={Login}
-        initialParams={{ user: user, ratings: allRatings }}
         options={{ headerStyle: { backgroundColor: '#FFC108' } }} />
       <Stack.Screen
         name='HomeScreen'

@@ -3,7 +3,7 @@ import { View, Text, Button, ScrollView, StyleSheet, TextInput } from 'react-nat
 import { Card } from 'react-native-elements';
 
 
-export default function HomeScreen({ navigation, route }) {
+export default function SearchScreen({ navigation, route }) {
     const breweries = route.params.breweries
     const [search, setSearch] = useState(null)
     const [searchField, setSearchField] = useState('')
@@ -40,6 +40,11 @@ export default function HomeScreen({ navigation, route }) {
         navigation.navigate('ShowScreen', { brewery: brewery })
     }
 
+    const handleNewBrewery = () => {
+        navigation.navigate('NewScreen')
+    }
+
+    console.log(breweries)
     return (
         <View style={styles.container}>
             <TextInput
@@ -59,6 +64,9 @@ export default function HomeScreen({ navigation, route }) {
             /> : null}
             <ScrollView>
                 {search ? renderBreweries() : null}
+                {search ? <Button
+                    title='Create New Brewery'
+                    onPress={handleNewBrewery} /> : null}
             </ScrollView>
         </View>
     )

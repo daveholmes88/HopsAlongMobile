@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Dimensions, ScrollView, TextInput, SafeAreaView
 import { Card } from 'react-native-elements';
 import * as Linking from 'expo-linking';
 
-
 export default function BreweryCard({ brewery, showBrewery }) {
 
     return (<Card key={brewery.id} containerStyle={styles.cardBorder} >

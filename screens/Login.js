@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TextInput, Button } from 'react-native';
 import * as SecureStore from "expo-secure-store";
 
+import { config } from "../Constants";
+
+const API_Users = config.url.API_Users
+
 export default function Login({ navigation, route }) {
     const [username, onChangeUsername] = useState("");
     const [password, onChangePassword] = useState("");
@@ -29,7 +33,7 @@ export default function Login({ navigation, route }) {
                 password: password,
             }),
         };
-        fetch("https://tranquil-earth-85240.herokuapp.com/users/1", reqUser)
+        fetch(`${API_Users}/1`, reqUser)
             .then((resp) => resp.json())
             .then((data) => {
                 if (data.error) {
@@ -42,7 +46,7 @@ export default function Login({ navigation, route }) {
             .catch((err) => console.log(err));
     };
 
-    sendSignup = () => {
+    const sendSignup = () => {
         const reqUser = {
             method: 'POST',
             headers: {
@@ -54,7 +58,7 @@ export default function Login({ navigation, route }) {
                 email: email
             })
         }
-        fetch('https://tranquil-earth-85240.herokuapp.com/users', reqUser)
+        fetch(API_Users, reqUser)
             .then(resp => resp.json())
             .then(data => {
                 if (data.error) {

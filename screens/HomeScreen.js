@@ -6,6 +6,10 @@ import * as Location from "expo-location";
 
 import BreweryCard from './BreweryCard'
 
+import { config } from "../Constants";
+
+const API_Descriptions = config.url.API_Descriptions
+
 export default function HomeScreen({ navigation, route }) {
   ratings = route.params.ratings
   const [location, setLocation] = useState({
@@ -41,7 +45,7 @@ export default function HomeScreen({ navigation, route }) {
   }, []);
 
   const locationFetch = newLocation => {
-    fetch('https://tranquil-earth-85240.herokuapp.com/descriptions', newLocation)
+    fetch(API_Descriptions, newLocation)
       .then(resp => resp.json())
       .then(data => {
         setBreweries(data.breweries)

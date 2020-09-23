@@ -8,6 +8,7 @@ export default function MyRatingScreen({ navigation, route }) {
     const ratings = route.params.ratings
     const breweries = route.params.breweries
     const [search, setSearch] = useState('')
+    console.log(route)
 
     const showBrewery = brewery => {
         navigation.navigate('ShowScreen', { brewery: brewery })

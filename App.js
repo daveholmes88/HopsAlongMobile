@@ -11,7 +11,13 @@ import HomeScreen from "./screens/HomeScreen";
 import ShowScreen from "./screens/ShowScreen";
 import Login from "./screens/Login";
 import MyRatingScreen from "./screens/MyRatingScreen";
-import SearchScreen from "./screens/SearchScreen"
+import SearchScreen from "./screens/SearchScreen";
+import NewScreen from "./screens/NewScreen"
+
+import { config } from "./Constants";
+
+const API_Breweries = config.url.API_Breweries
+const API_Users = config.url.API_Users
 
 export default function App() {
 
@@ -20,12 +26,10 @@ export default function App() {
   const [allBreweries, setAllBreweries] = useState([])
   const [allRatings, setAllRatings] = useState([])
   const [user, setUser] = useState({})
-  console.log(user)
 
   useEffect(() => {
     SecureStore.getItemAsync("token")
       .then(data => {
-        console.log(data)
         const token = data
         if (token) {
           userFetch(token)
@@ -36,7 +40,7 @@ export default function App() {
   }, [])
 
   breweryFetch = () => {
-    fetch('https://tranquil-earth-85240.herokuapp.com/breweries')
+    fetch(API_Breweries)
       .then(resp => resp.json())
       .then(data => {
         setAllBreweries(data.breweries),
@@ -52,7 +56,7 @@ export default function App() {
         "Authorization": `Bearer ${token}`
       }
     }
-    fetch('https://tranquil-earth-85240.herokuapp.com/users', reqObj)
+    fetch(API_Users, reqObj)
       .then(resp => resp.json())
       .then(data => {
         setAllBreweries(data.breweries)
@@ -63,7 +67,6 @@ export default function App() {
   }
 
   signIn = (user) => {
-    console.log('-----------------------')
     setUser(user)
   }
 
@@ -128,6 +131,9 @@ export default function App() {
           title: 'Brewery',
           headerStyle: { backgroundColor: '#FFC108' }
         }} />
+      <Stack.Screen
+        name='NewScreen'
+        component={NewScreen} />
     </Stack.Navigator>
   }
 

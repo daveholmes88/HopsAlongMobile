@@ -4,6 +4,10 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Card } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 
+import { config } from "../Constants";
+
+const API_Ratings = config.url.API_Ratings
+
 export default function ShowScreen({ route, navigation }) {
     const user = route.params.user
     const brewery = route.params.brewery
@@ -68,12 +72,13 @@ export default function ShowScreen({ route, navigation }) {
                 user_id: user.id
             })
         }
-        fetch('https://tranquil-earth-85240.herokuapp.com/ratings', createObj)
+        fetch(API_Ratings, createObj)
             .then(resp => resp.json())
             .then(ratings => {
                 setAllRatings(ratings)
-                history.push('Rating')
+                navigation.navigate('Rating')
             })
+            .catch(err => console.log(err))
     }
 
     const editRating = () => {
@@ -88,7 +93,7 @@ export default function ShowScreen({ route, navigation }) {
                 notes: notes
             })
         }
-        fetch(`https://tranquil-earth-85240.herokuapp.com/${myRating.id}`, updateObj)
+        fetch(`${API_Ratings}/${myRating.id}`, updateObj)
             .then(resp => resp.json())
             .then((ratings => {
                 setAllRatings(ratings)

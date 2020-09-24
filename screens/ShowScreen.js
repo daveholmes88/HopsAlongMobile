@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, TextInput } from 'react-native';
+import { ScrollView, Text, StyleSheet, SafeAreaView, Button, TextInput } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Card } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
@@ -102,10 +102,14 @@ export default function ShowScreen({ route, navigation }) {
             .catch(err => console.log(err))
     }
 
+    const editBrewery = () => {
+        navigation.navigate('EditScreen', { brewery: brewery })
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.cardContainer}>
+            <ScrollView>
                 <Card key={brewery.id} style={styles.breweryCard} containerStyle={styles.cardBorder}>
                     <Text style={{ fontSize: 18 }} >{brewery.name}</Text>
                     <Text>{brewery.brewery_type}</Text>
@@ -125,8 +129,9 @@ export default function ShowScreen({ route, navigation }) {
                     />
                     <Button title='Submit'
                         onPress={handleSubmit} />
+                    <Button title="Edit Brewery" onPress={editBrewery} />
                 </Card >
-            </View>
+            </ScrollView>
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
@@ -142,6 +147,7 @@ export default function ShowScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
     breweryCard: {
+        top: '5%',
         width: '100%',
         position: 'absolute',
         alignItems: 'center',
@@ -156,13 +162,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-        alignItems: "center",
     },
     map: {
-        height: '60%',
+        height: '40%',
         width: '100%',
         position: 'absolute',
-        top: '50%'
+        top: '60%'
     },
     textInput: {
         textAlign: 'center',

@@ -12,7 +12,8 @@ import ShowScreen from "./screens/ShowScreen";
 import Login from "./screens/Login";
 import MyRatingScreen from "./screens/MyRatingScreen";
 import SearchScreen from "./screens/SearchScreen";
-import NewScreen from "./screens/NewScreen"
+import NewScreen from "./screens/NewScreen";
+import EditScreen from "./screens/EditScreen"
 
 import { config } from "./Constants";
 
@@ -92,6 +93,9 @@ export default function App() {
           title: 'Brewery',
           headerStyle: { backgroundColor: '#FFC108' }
         }} />
+      <Stack.Screen
+        name='EditScreen'
+        component={EditScreen} />
     </Stack.Navigator>
   }
 
@@ -113,6 +117,9 @@ export default function App() {
           title: 'Brewery',
           headerStyle: { backgroundColor: '#FFC108' }
         }} />
+      <Stack.Screen
+        name='EditScreen'
+        component={EditScreen} />
     </Stack.Navigator>
   }
 
@@ -134,6 +141,9 @@ export default function App() {
       <Stack.Screen
         name='NewScreen'
         component={NewScreen} />
+      <Stack.Screen
+        name='EditScreen'
+        component={EditScreen} />
     </Stack.Navigator>
   }
 

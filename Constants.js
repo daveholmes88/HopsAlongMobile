@@ -20,4 +20,6 @@ const dev = {
     }
 }
 
+const GOOGLE_MAP_API_Key = 'AIzaSyBg8IlSLkk9QtP-B_C-cDSMpnc2irqlDCM'
+
 export const config = process.env.NODE_ENV === "development" ? dev : prod

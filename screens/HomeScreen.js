@@ -118,7 +118,6 @@ export default function HomeScreen({ navigation, route }) {
         {breweries.map(brewery => renderBreweryCard(brewery))}
       </ScrollView>
     </SafeAreaView>
-
   );
 }
 

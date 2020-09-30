@@ -3,10 +3,14 @@ import { ScrollView, Text, StyleSheet, SafeAreaView, Button, TextInput } from 'r
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Card } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
+import MapViewDirections from 'react-native-maps-directions';
+import * as Location from "expo-location";
 
-import { config } from "../Constants";
+
+import { config, GOOGLE_MAP_API_KEY } from "../Constants";
 
 const API_Ratings = config.url.API_Ratings
+const Google_APi = GOOGLE_MAP_API_KEY
 
 export default function ShowScreen({ route, navigation }) {
     const user = route.params.user
@@ -22,8 +26,23 @@ export default function ShowScreen({ route, navigation }) {
         latitudeDelta: 0.09,
         longitudeDelta: 0.045,
     });
+    const [myLocation, setMyLocation] = useState({})
+    const [directions, setDirections] = useState(false)
 
     useEffect(() => {
+        (async () => {
+            console.log('++++++++++++++++++++++')
+            let { status } = await Location.requestPermissionsAsync();
+            if (status === "granted") {
+                let position = await Location.getCurrentPositionAsync({
+                    enableHighAccuracy: true,
+                });
+                setMyLocation({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                })
+            }
+        })();
         const breweryRatings = allRatings.filter(rating => {
             return rating.brewery_id === brewery.id
         })
@@ -106,7 +125,7 @@ export default function ShowScreen({ route, navigation }) {
         navigation.navigate('EditScreen', { brewery: brewery })
     }
 
-
+    console.log(myLocation)
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -129,6 +148,8 @@ export default function ShowScreen({ route, navigation }) {
                     />
                     <Button title='Submit'
                         onPress={handleSubmit} />
+                    <Button title='Directions'
+                        onPress={() => setDirections(!directions)} />
                     <Button title="Edit Brewery" onPress={editBrewery} />
                 </Card >
             </ScrollView>
@@ -140,6 +161,13 @@ export default function ShowScreen({ route, navigation }) {
                     key={brewery.id}
                     coordinate={{ latitude: brewery.latitude, longitude: brewery.longitude }}
                 />
+                {directions ? <MapViewDirections
+                    origin={myLocation}
+                    destination={{ latitude: location.latitude, longitude: location.longitude }}
+                    apikey={Google_APi}
+                    strokeWidth={3}
+                    strokeColor="hotpink"
+                /> : null}
             </MapView>
         </SafeAreaView >
     )

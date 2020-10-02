@@ -6,8 +6,6 @@ import StarRating from 'react-native-star-rating';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Location from "expo-location";
 
-
-
 import { config, GOOGLE_MAP_API_Key } from "../Constants";
 
 const API_Ratings = config.url.API_Ratings
@@ -127,7 +125,42 @@ export default function ShowScreen({ route, navigation }) {
         navigation.navigate('EditScreen', { brewery: brewery })
     }
 
-    console.log(GOOGLE_MAP_API_Key)
+    const showDirections = () => {
+        let points = [
+            { latitude: brewery.latitude, longitude: brewery.longitude },
+            { latitude: myLocation.latitude, longitude: myLocation.longitude }
+        ]
+        let minLat, maxLat, minLng, maxLng;
+
+        (point => {
+            minLat = point.latitude;
+            maxLat = point.latitude;
+            minLng = point.longitude;
+            maxLng = point.longitude;
+        })(points[0]);
+
+        points.forEach(point => {
+            minLat = Math.min(minLat, point.latitude);
+            maxLat = Math.max(maxLat, point.latitude);
+            minLng = Math.min(minLng, point.longitude);
+            maxLng = Math.max(maxLng, point.longitude);
+        });
+
+        const midLat = (minLat + maxLat) / 2;
+        const midLng = (minLng + maxLng) / 2;
+
+        const deltaLat = (maxLat - minLat);
+        const deltaLng = (maxLng - minLng);
+
+        setLocation({
+            latitude: midLat,
+            longitude: midLng,
+            latitudeDelta: deltaLat,
+            longitudeDelta: deltaLng,
+        });
+        setDirections(!directions)
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -150,12 +183,13 @@ export default function ShowScreen({ route, navigation }) {
                     />
                     <Button title='Submit'
                         onPress={handleSubmit} />
-                    <Button title='Directions'
-                        onPress={() => setDirections(!directions)} />
+                    {directions ? null : <Button title='Directions'
+                        onPress={showDirections} />}
                     <Button title="Edit Brewery" onPress={editBrewery} />
                 </Card >
             </ScrollView>
             <MapView
+                showsUserLocation
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
                 region={location} >
@@ -165,7 +199,7 @@ export default function ShowScreen({ route, navigation }) {
                 />
                 {directions ? <MapViewDirections
                     origin={myLocation}
-                    destination={{ latitude: location.latitude, longitude: location.longitude }}
+                    destination={{ latitude: brewery.latitude, longitude: brewery.longitude }}
                     apikey={Google_API}
                     strokeWidth={3}
                     strokeColor="hotpink"

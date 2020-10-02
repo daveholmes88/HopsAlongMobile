@@ -7,10 +7,12 @@ import MapViewDirections from 'react-native-maps-directions';
 import * as Location from "expo-location";
 
 
-import { config, GOOGLE_MAP_API_KEY } from "../Constants";
+
+import { config, GOOGLE_MAP_API_Key } from "../Constants";
 
 const API_Ratings = config.url.API_Ratings
-const Google_APi = GOOGLE_MAP_API_KEY
+const Google_API = GOOGLE_MAP_API_Key
+
 
 export default function ShowScreen({ route, navigation }) {
     const user = route.params.user
@@ -125,7 +127,7 @@ export default function ShowScreen({ route, navigation }) {
         navigation.navigate('EditScreen', { brewery: brewery })
     }
 
-    console.log(myLocation)
+    console.log(GOOGLE_MAP_API_Key)
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -164,7 +166,7 @@ export default function ShowScreen({ route, navigation }) {
                 {directions ? <MapViewDirections
                     origin={myLocation}
                     destination={{ latitude: location.latitude, longitude: location.longitude }}
-                    apikey={Google_APi}
+                    apikey={Google_API}
                     strokeWidth={3}
                     strokeColor="hotpink"
                 /> : null}

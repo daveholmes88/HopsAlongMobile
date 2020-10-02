@@ -109,6 +109,7 @@ export default function HomeScreen({ navigation, route }) {
         onPress={onSearch}
       />
       <MapView
+        showsUserLocation
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         region={location}>
